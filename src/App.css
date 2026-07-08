@@ -129,3 +129,52 @@
 .pokemon-card h3 {
   text-transform: capitalize;
 }
+
+/* Estilos para el estado Activo de Favoritos */
+.btn-favorite {
+  background-color: #f0f0f0;
+  color: #333;
+  transition: background-color 0.2s;
+}
+.btn-favorite.active {
+  background-color: #ffcb05;
+  color: #1d2c5e;
+  border: 1px solid #1d2c5e;
+}
+
+/* Lista del Panel de Favoritos */
+.favorites-list {
+  list-style: none;
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.favorite-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #f1f3f5;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #e9ecef;
+}
+.fav-thumb {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+.fav-name {
+  flex: 1;
+  text-transform: capitalize;
+  font-size: 0.95rem;
+  font-weight: bold;
+}
+.btn-remove-fav {
+  background: transparent;
+  padding: 4px;
+  font-size: 0.8rem;
+}
+.btn-remove-fav:hover {
+  transform: scale(1.1);
+}

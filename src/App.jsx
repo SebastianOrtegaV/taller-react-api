@@ -9,10 +9,12 @@ import { useFetch } from './hooks/useFetch';
 import './App.css';
 
 function App() {
-  // Cambiamos el límite a 251 para traer la primera y segunda generación completa
   const { data, loading, error } = useFetch('https://pokeapi.co/api/v2/pokemon?limit=251');
   const [pokemons, setPokemons] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  
+  // 1. Estado para almacenar los Pokémon favoritos
+  const [favorites, setFavorites] = useState([]);
 
   useEffect(() => {
     if (data && data.results) {
@@ -30,13 +32,26 @@ function App() {
     }
   }, [data]);
 
-  // El filtrado por estado derivado sigue funcionando instantáneamente con 251 elementos
+  // 2. Función tipo Toggle para agregar o quitar de favoritos
+  const handleToggleFavorite = (pokemon) => {
+    const isAlreadyFavorite = favorites.some((fav) => fav.id === pokemon.id);
+    
+    if (isAlreadyFavorite) {
+      // Si ya existe, lo filtramos para eliminarlo
+      setFavorites(favorites.filter((fav) => fav.id !== pokemon.id));
+    } else {
+      // Si no existe, lo agregamos a la lista
+      setFavorites([...favorites, pokemon]);
+    }
+  };
+
   const filteredPokemons = pokemons.filter((pokemon) =>
     pokemon.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const totalPokemons = pokemons.length;
-  const totalFavorites = 0;
+  // Pasamos el tamaño real del arreglo de favoritos
+  const totalFavorites = favorites.length;
   const totalBlocked = 0;
 
   return (
@@ -62,12 +77,19 @@ function App() {
           )}
           
           {!loading && !error && filteredPokemons.length > 0 && (
-            <ListaPokemon pokemons={filteredPokemons} />
+            <ListaPokemon 
+              pokemons={filteredPokemons} 
+              favorites={favorites}
+              onToggleFavorite={handleToggleFavorite}
+            />
           )}
         </section>
         
         <section className="sidebar-section">
-          <PanelFavoritos />
+          <PanelFavoritos 
+            favorites={favorites} 
+            onRemoveFavorite={handleToggleFavorite}
+          />
         </section>
       </main>
     </div>
