@@ -1,0 +1,112 @@
+.app-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Header & Team */
+.header {
+  text-align: center;
+  margin-bottom: 10px;
+}
+.header h1 {
+  color: var(--primary-color);
+}
+.team-section {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+/* Layout Principal */
+.main-layout {
+  display: flex;
+  gap: 20px;
+  flex-direction: column; /* Movil por defecto */
+}
+
+@media (min-width: 768px) {
+  .main-layout {
+    flex-direction: row; /* Desktop */
+  }
+  .content-section {
+    flex: 3;
+  }
+  .sidebar-section {
+    flex: 1;
+  }
+}
+
+/* Stats Panel */
+.stats-panel {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+  background: var(--card-bg);
+  padding: 15px;
+  border-radius: var(--border-radius);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  justify-content: space-around;
+}
+.stat-box span {
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: var(--primary-color);
+}
+
+/* Search Bar */
+.search-bar {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.search-bar input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: var(--border-radius);
+}
+.search-bar button {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+/* Pokemon List & Cards */
+.pokemon-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+}
+.pokemon-card {
+  background: var(--card-bg);
+  padding: 15px;
+  border-radius: var(--border-radius);
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.pokemon-image {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+}
+.card-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 15px;
+}
+
+/* Favorites Panel */
+.favorites-panel {
+  background: var(--card-bg);
+  padding: 20px;
+  border-radius: var(--border-radius);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  height: 100%;
+}
+.empty-message {
+  color: #888;
+  font-style: italic;
+  margin-top: 15px;
+}
