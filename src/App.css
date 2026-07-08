@@ -106,9 +106,10 @@
   height: 100%;
 }
 .empty-message {
-  color: #888;
+  color: #868e96;
+  font-size: 0.9rem;
   font-style: italic;
-  margin-top: 15px;
+  margin: 10px 0 0 0;
 }
 
 /* Estados de Carga y Error */
@@ -237,3 +238,42 @@
   display: flex;
   flex-direction: column;
 }
+
+/* Botones de ordenamiento lateral */
+.sidebar-tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+  background: var(--card-bg);
+  padding: 10px;
+  border-radius: var(--border-radius);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.tab-btn {
+  flex: 1;
+  padding: 8px 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  background-color: #f1f3f5;
+  color: #495057;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.tab-btn:hover {
+  background-color: #e9ecef;
+}
+.tab-btn.active {
+  background-color: #1d2c5e;
+  color: white;
+  border-color: #1d2c5e;
+}
+
+/* Ajuste para que los paneles laterales crezcan orgánicamente con su contenido */
+.favorites-panel, 
+.blocked-panel {
+  height: fit-content;
+  /* Esto asegura que si están vacíos, no ocupen espacio vertical extra */
+}
+

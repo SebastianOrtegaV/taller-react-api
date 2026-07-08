@@ -14,24 +14,23 @@ function App() {
   const [pokemons, setPokemons] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   
-  // 1. Inicialización perezosa de Favoritos leyendo desde localStorage
+  // Estado para el orden de la barra lateral ('favorites' o 'blocked')
+  const [sidebarOrder, setSidebarOrder] = useState('favorites');
+  
   const [favorites, setFavorites] = useState(() => {
     const savedFavorites = localStorage.getItem('taller_pokedex_favorites');
     return savedFavorites ? JSON.parse(savedFavorites) : [];
   });
   
-  // 2. Inicialización perezosa de Bloqueados leyendo desde localStorage
   const [blocked, setBlocked] = useState(() => {
     const savedBlocked = localStorage.getItem('taller_pokedex_blocked');
     return savedBlocked ? JSON.parse(savedBlocked) : [];
   });
 
-  // 3. EFECTO: Guardar favoritos automáticamente en localStorage cada vez que cambien
   useEffect(() => {
     localStorage.setItem('taller_pokedex_favorites', JSON.stringify(favorites));
   }, [favorites]);
 
-  // 4. EFECTO: Guardar bloqueados automáticamente en localStorage cada vez que cambien
   useEffect(() => {
     localStorage.setItem('taller_pokedex_blocked', JSON.stringify(blocked));
   }, [blocked]);
@@ -86,6 +85,7 @@ function App() {
       
       <main className="main-layout">
         <section className="content-section">
+          {/* Mantenemos intacta la sección general con sus totales */}
           <PanelEstatus 
             total={totalPokemons} 
             favorites={totalFavorites} 
@@ -111,15 +111,35 @@ function App() {
           )}
         </section>
         
+        {/* Barra Lateral con Ordenamiento Dinámico */}
         <section className="sidebar-section">
-          <PanelFavoritos 
-            favorites={favorites} 
-            onRemoveFavorite={handleToggleFavorite}
-          />
-          <PanelBloqueados 
-            blocked={blocked} 
-            onRemoveBlock={handleToggleBlock}
-          />
+          <div className="sidebar-tabs">
+            <button 
+              className={`tab-btn ${sidebarOrder === 'favorites' ? 'active' : ''}`}
+              onClick={() => setSidebarOrder('favorites')}
+            >
+              Favoritos ⭐
+            </button>
+            <button 
+              className={`tab-btn ${sidebarOrder === 'blocked' ? 'active' : ''}`}
+              onClick={() => setSidebarOrder('blocked')}
+            >
+              Bloqueados 🚫
+            </button>
+          </div>
+
+          {/* Renderizado condicional del orden de los paneles */}
+          {sidebarOrder === 'favorites' ? (
+            <>
+              <PanelFavoritos favorites={favorites} onRemoveFavorite={handleToggleFavorite} />
+              <PanelBloqueados blocked={blocked} onRemoveBlock={handleToggleBlock} />
+            </>
+          ) : (
+            <>
+              <PanelBloqueados blocked={blocked} onRemoveBlock={handleToggleBlock} />
+              <PanelFavoritos favorites={favorites} onRemoveFavorite={handleToggleFavorite} />
+            </>
+          )}
         </section>
       </main>
     </div>
