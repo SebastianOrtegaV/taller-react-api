@@ -9,28 +9,31 @@ import { useFetch } from './hooks/useFetch';
 import './App.css';
 
 function App() {
-  // Uso de nuestro custom hook para traer los 151 primeros Pokémon
-  const { data, loading, error } = useFetch('https://pokeapi.co/api/v2/pokemon?limit=151');
+  // Cambiamos el límite a 251 para traer la primera y segunda generación completa
+  const { data, loading, error } = useFetch('https://pokeapi.co/api/v2/pokemon?limit=251');
   const [pokemons, setPokemons] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
 
-  // Este useEffect formatea los datos una vez que la API responde
   useEffect(() => {
     if (data && data.results) {
       const formattedPokemons = data.results.map((poke) => {
-        // Extraemos el ID directamente de la URL (ej: "https://pokeapi.co/api/v2/pokemon/1/")
         const urlParts = poke.url.split('/');
         const id = urlParts[urlParts.length - 2];
         
         return {
           id: parseInt(id),
           name: poke.name,
-          // Generamos la URL de la imagen oficial usando el ID
           image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`
         };
       });
       setPokemons(formattedPokemons);
     }
   }, [data]);
+
+  // El filtrado por estado derivado sigue funcionando instantáneamente con 251 elementos
+  const filteredPokemons = pokemons.filter((pokemon) =>
+    pokemon.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const totalPokemons = pokemons.length;
   const totalFavorites = 0;
@@ -48,12 +51,19 @@ function App() {
             favorites={totalFavorites} 
             blocked={totalBlocked} 
           />
-          <BarraBusqueda />
           
-          {/* Manejo de estados: Cargando, Error y Éxito */}
+          <BarraBusqueda searchTerm={searchTerm} onSearchChange={setSearchTerm} />
+          
           {loading && <p className="status-msg">Cargando la Pokédex... ⏳</p>}
           {error && <p className="status-msg error-msg">❌ Error: {error}</p>}
-          {!loading && !error && <ListaPokemon pokemons={pokemons} />}
+          
+          {!loading && !error && filteredPokemons.length === 0 && (
+            <p className="status-msg">No se encontraron Pokémon que coincidan con "{searchTerm}"</p>
+          )}
+          
+          {!loading && !error && filteredPokemons.length > 0 && (
+            <ListaPokemon pokemons={filteredPokemons} />
+          )}
         </section>
         
         <section className="sidebar-section">

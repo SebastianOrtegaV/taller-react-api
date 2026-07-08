@@ -1,12 +1,12 @@
-export default function BarraBusqueda() {
+export default function BarraBusqueda({ searchTerm, onSearchChange }) {
   return (
     <div className="search-bar">
       <input 
         type="text" 
         placeholder="Buscar Pokémon por nombre..." 
-        disabled
+        value={searchTerm}
+        onChange={(e) => onSearchChange(e.target.value)}
       />
-      <button disabled>Buscar</button>
     </div>
   );
 }
