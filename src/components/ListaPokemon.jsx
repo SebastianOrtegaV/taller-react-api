@@ -1,15 +1,15 @@
 import PokemonInfo from './PokemonInfo';
 
-export default function ListaPokemon({ pokemons, favorites, onToggleFavorite }) {
+export default function ListaPokemon({ pokemons, favorites, onToggleFavorite, onToggleBlock }) {
   return (
     <div className="pokemon-list">
       {pokemons.map((pokemon) => (
         <PokemonInfo 
           key={pokemon.id} 
           pokemon={pokemon} 
-          // Evaluamos si este Pokémon específico está en el arreglo de favoritos
           isFavorite={favorites.some((fav) => fav.id === pokemon.id)}
           onToggleFavorite={onToggleFavorite}
+          onToggleBlock={onToggleBlock}
         />
       ))}
     </div>

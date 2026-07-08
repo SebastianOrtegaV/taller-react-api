@@ -1,4 +1,4 @@
-export default function PokemonInfo({ pokemon, isFavorite, onToggleFavorite }) {
+export default function PokemonInfo({ pokemon, isFavorite, onToggleFavorite, onToggleBlock }) {
   return (
     <article className="pokemon-card">
       <img src={pokemon.image} alt={pokemon.name} className="pokemon-image" />
@@ -10,7 +10,9 @@ export default function PokemonInfo({ pokemon, isFavorite, onToggleFavorite }) {
         >
           {isFavorite ? '⭐ Quitar' : '☆ Favorito'}
         </button>
-        <button className="btn-block" disabled>🚫 Bloquear</button>
+        <button className="btn-block" onClick={() => onToggleBlock(pokemon)}>
+          🚫 Bloquear
+        </button>
       </div>
     </article>
   );

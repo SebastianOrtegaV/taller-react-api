@@ -178,3 +178,62 @@
 .btn-remove-fav:hover {
   transform: scale(1.1);
 }
+
+/* Botón de bloqueo */
+.btn-block {
+  background-color: #fff;
+  color: #dc3545;
+  border: 1px solid #dc3545;
+  transition: all 0.2s;
+}
+.btn-block:hover {
+  background-color: #dc3545;
+  color: white;
+}
+
+/* Panel de Bloqueados */
+.blocked-panel {
+  background: var(--card-bg);
+  padding: 20px;
+  border-radius: var(--border-radius);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  margin-top: 20px;
+}
+.blocked-panel h2 {
+  font-size: 1.3rem;
+  color: #333;
+}
+.blocked-list {
+  list-style: none;
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.blocked-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #f8f9fa;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid #e9ecef;
+}
+.blocked-name {
+  text-transform: capitalize;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+.btn-unblock {
+  background: #e9ecef;
+  color: #495057;
+  font-size: 0.75rem;
+  padding: 4px 8px;
+}
+.btn-unblock:hover {
+  background: #ced4da;
+}
+.sidebar-section {
+  display: flex;
+  flex-direction: column;
+}

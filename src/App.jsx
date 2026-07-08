@@ -5,6 +5,7 @@ import PanelEstatus from './components/PanelEstatus';
 import BarraBusqueda from './components/BarraBusqueda';
 import ListaPokemon from './components/ListaPokemon';
 import PanelFavoritos from './components/PanelFavoritos';
+import PanelBloqueados from './components/PanelBloqueados';
 import { useFetch } from './hooks/useFetch';
 import './App.css';
 
@@ -12,9 +13,10 @@ function App() {
   const { data, loading, error } = useFetch('https://pokeapi.co/api/v2/pokemon?limit=251');
   const [pokemons, setPokemons] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  
-  // 1. Estado para almacenar los Pokémon favoritos
   const [favorites, setFavorites] = useState([]);
+  
+  // 1. Estado para almacenar los Pokémon bloqueados
+  const [blocked, setBlocked] = useState([]);
 
   useEffect(() => {
     if (data && data.results) {
@@ -32,27 +34,37 @@ function App() {
     }
   }, [data]);
 
-  // 2. Función tipo Toggle para agregar o quitar de favoritos
   const handleToggleFavorite = (pokemon) => {
     const isAlreadyFavorite = favorites.some((fav) => fav.id === pokemon.id);
-    
     if (isAlreadyFavorite) {
-      // Si ya existe, lo filtramos para eliminarlo
       setFavorites(favorites.filter((fav) => fav.id !== pokemon.id));
     } else {
-      // Si no existe, lo agregamos a la lista
       setFavorites([...favorites, pokemon]);
     }
   };
 
-  const filteredPokemons = pokemons.filter((pokemon) =>
-    pokemon.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // 2. Función tipo Toggle para agregar o quitar de bloqueados
+  const handleToggleBlock = (pokemon) => {
+    const isAlreadyBlocked = blocked.some((b) => b.id === pokemon.id);
+    
+    if (isAlreadyBlocked) {
+      setBlocked(blocked.filter((b) => b.id !== pokemon.id));
+    } else {
+      setBlocked([...blocked, pokemon]);
+      // Regla de negocio: Si se bloquea, se saca automáticamente de favoritos
+      setFavorites(favorites.filter((fav) => fav.id !== pokemon.id));
+    }
+  };
+
+  // 3. ESTADO DERIVADO OPTIMIZADO: Excluimos bloqueados y luego filtramos por búsqueda
+  const filteredPokemons = pokemons
+    .filter((pokemon) => !blocked.some((b) => b.id === pokemon.id))
+    .filter((pokemon) => pokemon.name.toLowerCase().includes(searchTerm.toLowerCase()));
 
   const totalPokemons = pokemons.length;
-  // Pasamos el tamaño real del arreglo de favoritos
   const totalFavorites = favorites.length;
-  const totalBlocked = 0;
+  // Pasamos la cantidad real de bloqueados
+  const totalBlocked = blocked.length;
 
   return (
     <div className="app-container">
@@ -81,6 +93,7 @@ function App() {
               pokemons={filteredPokemons} 
               favorites={favorites}
               onToggleFavorite={handleToggleFavorite}
+              onToggleBlock={handleToggleBlock}
             />
           )}
         </section>
@@ -89,6 +102,11 @@ function App() {
           <PanelFavoritos 
             favorites={favorites} 
             onRemoveFavorite={handleToggleFavorite}
+          />
+          {/* Insertamos nuestro nuevo panel en la barra lateral */}
+          <PanelBloqueados 
+            blocked={blocked} 
+            onRemoveBlock={handleToggleBlock}
           />
         </section>
       </main>
