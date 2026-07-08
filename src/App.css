@@ -110,3 +110,22 @@
   font-style: italic;
   margin-top: 15px;
 }
+
+/* Estados de Carga y Error */
+.status-msg {
+  text-align: center;
+  font-size: 1.2rem;
+  padding: 40px;
+  background: var(--card-bg);
+  border-radius: var(--border-radius);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.error-msg {
+  color: var(--primary-color);
+  border: 1px solid var(--primary-color);
+}
+
+/* Capitalizar nombre de Pokémon */
+.pokemon-card h3 {
+  text-transform: capitalize;
+}
